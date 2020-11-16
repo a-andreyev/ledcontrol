@@ -15,14 +15,7 @@ LED::LED(QString const &path, QObject *parent):QObject(parent),_path(path) {
 }
 
 bool LED::turnOn(int brightness) {
-	int fd=open(QFile::encodeName(_path + "/brightness"), O_WRONLY);
-	if(fd < 0) {
-		std::cerr << strerror(errno) << std::endl;
-		return false;
-	}
-	write(fd, "1", 1);
-	close(fd);
-	return true;
+	return setBrightness(brightness) > 0;
 }
 
 bool LED::turnOff() {
@@ -37,6 +30,8 @@ bool LED::turnOff() {
 }
 
 int LED::setBrightness(int brightness) {
+	if(brightness<0)
+		brightness=maxBrightness();
 	QString const b = _path + "/brightness";
 	char buf[16];
 	snprintf(buf, 16, "%u", brightness);
