@@ -3,10 +3,11 @@ project(ledcontrol VERSION 0.0.1)
 
 set(CMAKE_CXX_STANDARD 20)
 
-find_package(Qt5 5.15.0 CONFIG REQUIRED COMPONENTS Core DBus)
+set(QT_MIN_VERSION "5.15.0")
 add_definitions(${QT_DEFINITIONS} -DQT_DISABLE_DEPRECATED_BEFORE=0x050f00)
+set(KF5_MIN_VERSION "5.88.0")
 
-# FIXME why doesn't anything set QT_INCLUDES?
-include_directories(/usr/include/qt5 /usr/include/qt5/QtCore /usr/include/qt5/QtDBus /usr/include/qt5/QtGui /usr/include/qt5/QtWidgets)
+find_package(ECM ${KF5_MIN_VERSION} REQUIRED NO_MODULE)
+set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
 
 add_subdirectory(src)
